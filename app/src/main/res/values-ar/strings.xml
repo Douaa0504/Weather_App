@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">تطبيق الطقس</string>
+    <string name="search_city">البحث عن مدينة...</string>
+    <string name="humidity">الرطوبة</string>
+    <string name="wind_speed">سرعة الرياح</string>
+    <string name="visibility">الرؤية</string>
+    <string name="pressure">الضغط</string>
+    <string name="forecast_5_days">توقعات 5 أيام</string>
+    <string name="feels_like">تبدو وكأنها %1$d°</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="error_location">تعذر جلب الموقع. تأكد من منح الإذن وتفعيل GPS.</string>
+    <string name="error_unknown">حدث خطأ غير معروف</string>
+    <string name="error_network">خطأ في الشبكة. يرجى التحقق من اتصال الإنترنت.</string>
+    <string name="error_api_key">مفتاح API غير صالح. يرجى التحقق من التكوين الخاص بك.</string>
+    <string name="error_city_not_found">المدينة غير موجودة. يرجى تجربة اسم آخر.</string>
+    <string name="settings">الإعدادات</string>
+    <string name="language">اللغة</string>
+    <string name="theme">المظهر</string>
+    <string name="units">الوحدات</string>
+    <string name="metric">متري (°م، م/ث)</string>
+    <string name="imperial">إمبراطوري (°ف، ميل/س)</string>
+    <string name="light">فاتح</string>
+    <string name="dark">داكن</string>
+    <string name="system_default">تلقائي</string>
+    <string name="english">الإنجليزية</string>
+    <string name="arabic">العربية</string>
+    <string name="french">الفرنسية</string>
+</resources>

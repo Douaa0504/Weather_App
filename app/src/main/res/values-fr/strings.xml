@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Application Météo</string>
+    <string name="search_city">Rechercher une ville...</string>
+    <string name="humidity">Humidité</string>
+    <string name="wind_speed">Vitesse du vent</string>
+    <string name="visibility">Visibilité</string>
+    <string name="pressure">Pression</string>
+    <string name="forecast_5_days">Prévisions sur 5 jours</string>
+    <string name="feels_like">Ressenti %1$d°</string>
+    <string name="retry">Réessayer</string>
+    <string name="error_location">Impossible de récupérer la position. Assurez-vous d\'accorder l\'autorisation et d\'activer le GPS.</string>
+    <string name="error_unknown">Une erreur inconnue s\'est produite</string>
+    <string name="error_network">Erreur réseau. Veuillez vérifier votre connexion internet.</string>
+    <string name="error_api_key">Clé API invalide. Veuillez vérifier votre configuration.</string>
+    <string name="error_city_not_found">Ville non trouvée. Veuillez essayer un autre nom.</string>
+    <string name="settings">Paramètres</string>
+    <string name="language">Langue</string>
+    <string name="theme">Thème</string>
+    <string name="units">Unités</string>
+    <string name="metric">Métrique (°C, m/s)</string>
+    <string name="imperial">Impérial (°F, mph)</string>
+    <string name="light">Clair</string>
+    <string name="dark">Sombre</string>
+    <string name="system_default">Par défaut</string>
+    <string name="english">Anglais</string>
+    <string name="arabic">Arabe</string>
+    <string name="french">Français</string>
+</resources>
