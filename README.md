@@ -13,10 +13,19 @@
 ## 📸 Preview
 
 <p align="center">
-  <img src="screenshots/home.png" width="230" alt="Home Screen"/>
-  <img src="screenshots/details.png" width="230" alt="Weather Details"/>
-  <img src="screenshots/search.png" width="230" alt="Real-time Search"/>
-  <img src="screenshots/dark_mode.png" width="230" alt="Dark Mode"/>
+  <img src="screenshots/splachScreen.png" width="230" alt="Splash Screen"/>
+  <img src="screenshots/homeScreenCity1.jpeg" width="230" alt="Home Screen"/>
+  <img src="screenshots/homescreen1City1.jpeg" width="230" alt="Details"/>
+  <img src="screenshots/homeScreenCity2.jpeg" width="230" alt="Home Screen"/>
+  <img src="screenshots/homeScreen2City2.jpeg" width="230" alt="Details"/>  
+  <img src="screenshots/homeScreenCity3.jpeg" width="230" alt="Home Screen"/>  
+  <img src="screenshots/homeScreen3City3.jpeg" width="230" alt="Details"/>
+  <img src="screenshots/homeScreenCity4.jpeg" width="230" alt="Home Screen"/>
+  <img src="screenshots/homeScreen4City4.jpeg" width="230" alt="Details"/>
+  <img src="screenshots/cityNotFound.jpeg" width="230" alt="Real-time Search"/>
+  <img src="screenshots/settingsScreen2.jpeg" width="230" alt="Dark Mode"/>
+  <img src="screenshots/settingsScreen.jpeg" width="230" alt="Light Mode"/>
+
 </p>
 
 <p align="center">
@@ -138,5 +147,5 @@ This project is proprietary and confidential. Unauthorized copying, modification
 
 ---
 
-**Developed with ❤️ by [Douaa ERRAMI](https://github.com/Douaa0504)** — *Crafting Next-Generation Android Experiences.*
+**Developed by [Douaa ERRAMI](https://github.com/Douaa0504)** — *Crafting Next-Generation Android Experiences.*
 ⭐ **Star this repository if you find it impressive!**

@@ -19,7 +19,8 @@ android {
         localProperties.load(FileInputStream(localPropertiesFile))
     }
 
-    val apiKey = localProperties.getProperty("OPENWEATHER_API_KEY") ?: "52d7e9841f6ea15b25f4901c850fcbe8"
+    // Securely retrieve the API key. No hardcoded fallback to prevent leaks in Version Control.
+    val apiKey = localProperties.getProperty("OPENWEATHER_API_KEY") ?: ""
 
     defaultConfig {
         applicationId = "com.erramidouaa.weatherapp"
