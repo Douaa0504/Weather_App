@@ -17,29 +17,41 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
+/**
+ * Implémentation du repository Weather.
+ * Cette classe gère la logique de récupération des données entre l'API (Remote) et la base de données (Local).
+ */
 class WeatherRepositoryImpl @Inject constructor(
     private val api: WeatherApi,
     private val dao: WeatherDao
 ) : WeatherRepository {
 
+    // Récupération de la clé API depuis les propriétés de configuration sécurisées
     private val apiKey = BuildConfig.OPENWEATHER_API_KEY
 
+    /**
+     * Récupère la météo en fonction des coordonnées géographiques (Latitude, Longitude).
+     */
     override suspend fun getWeatherData(lat: Double, lon: Double, units: String): Resource<WeatherInfo> {
-        return withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) { // Exécution dans le thread IO pour ne pas bloquer l'UI
             try {
                 if (apiKey.isBlank()) return@withContext Resource.Error("API Key is missing")
 
+                // Appel réseau simultané pour la météo actuelle et les prévisions
                 val remoteCurrent = api.getCurrentWeatherByCoords(lat, lon, apiKey, units)
                 val remoteForecast = api.getForecastByCoords(lat, lon, apiKey, units)
-                
+
+                // Transformation des DTO (données réseau) en modèles utilisables par l'application
                 val currentWeather = remoteCurrent.toWeatherData()
                 val weatherInfo = remoteForecast.toWeatherInfo(currentWeather)
-                
+
+                // Mise à jour du cache local (Room) pour le mode hors-ligne
                 saveToCache(weatherInfo)
-                
+
                 Resource.Success(data = weatherInfo)
             } catch (e: Exception) {
                 e.printStackTrace()
+                // En cas d'erreur, on tente de récupérer les dernières données sauvegardées localement
                 val cache = getFromCache()
                 if (cache != null && cache is Resource.Success) {
                     cache
@@ -50,6 +62,9 @@ class WeatherRepositoryImpl @Inject constructor(
         }
     }
 
+    /**
+     * Récupère la météo en cherchant par le nom de la ville.
+     */
     override suspend fun getWeatherDataByCity(city: String, units: String): Resource<WeatherInfo> {
         return withContext(Dispatchers.IO) {
             try {
@@ -57,12 +72,13 @@ class WeatherRepositoryImpl @Inject constructor(
 
                 val remoteCurrent = api.getCurrentWeather(city, apiKey, units)
                 val remoteForecast = api.getForecast(city, apiKey, units)
-                
+
                 val currentWeather = remoteCurrent.toWeatherData()
                 val weatherInfo = remoteForecast.toWeatherInfo(currentWeather)
-                
+
+                // On met en cache également les recherches par ville
                 saveToCache(weatherInfo)
-                
+
                 Resource.Success(data = weatherInfo)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -71,21 +87,28 @@ class WeatherRepositoryImpl @Inject constructor(
         }
     }
 
+    /**
+     * Centralisation de la gestion des erreurs (Réseau, Serveur, etc.).
+     */
     private fun handleException(e: Exception): Resource<WeatherInfo> {
         return when (e) {
-            is IOException -> Resource.Error("Network error. Please check your internet connection.")
+            is IOException -> Resource.Error("Erreur réseau. Veuillez vérifier votre connexion.")
             is HttpException -> {
                 when (e.code()) {
-                    401 -> Resource.Error("Invalid API key. Please check your configuration.")
-                    404 -> Resource.Error("City not found. Please try another name.")
-                    else -> Resource.Error("Server error. Please try again later.")
+                    401 -> Resource.Error("Clé API invalide. Vérifiez votre configuration.")
+                    404 -> Resource.Error("Ville introuvable. Veuillez réessayer.")
+                    else -> Resource.Error("Erreur serveur. Veuillez réessayer plus tard.")
                 }
             }
-            else -> Resource.Error(e.message ?: "An unknown error occurred")
+            else -> Resource.Error(e.message ?: "Une erreur inconnue est survenue")
         }
     }
 
+    /**
+     * Sauvegarde les données météo dans Room (Base de données locale).
+     */
     private suspend fun saveToCache(weatherInfo: WeatherInfo) {
+        // Sauvegarde de la météo actuelle
         dao.insertCurrentWeather(
             WeatherEntity(
                 city = weatherInfo.city,
@@ -101,20 +124,25 @@ class WeatherRepositoryImpl @Inject constructor(
                 lastUpdated = System.currentTimeMillis()
             )
         )
+
+        // Nettoyage et insertion des nouvelles prévisions (horaires et journalières)
         dao.clearForecast()
-        val forecastEntities = weatherInfo.dailyForecast.map { 
-            it.toForecastEntity(isHourly = false) 
-        } + weatherInfo.hourlyForecast.map { 
-            it.toForecastEntity(isHourly = true) 
+        val forecastEntities = weatherInfo.dailyForecast.map {
+            it.toForecastEntity(isHourly = false)
+        } + weatherInfo.hourlyForecast.map {
+            it.toForecastEntity(isHourly = true)
         }
         dao.insertForecast(forecastEntities)
     }
 
+    /**
+     * Récupère les données depuis Room pour permettre l'affichage sans internet.
+     */
     private suspend fun getFromCache(): Resource<WeatherInfo>? {
         val current = dao.getCurrentWeather() ?: return null
         val hourly = dao.getHourlyForecast()
         val daily = dao.getDailyForecast()
-        
+
         return Resource.Success(
             data = WeatherInfo(
                 current = current.toWeatherData(),
@@ -124,6 +152,8 @@ class WeatherRepositoryImpl @Inject constructor(
             )
         )
     }
+
+    // --- Fonctions d'extension (Mappers) internes pour la conversion de données ---
 
     private fun WeatherData.toForecastEntity(isHourly: Boolean): ForecastEntity {
         return ForecastEntity(

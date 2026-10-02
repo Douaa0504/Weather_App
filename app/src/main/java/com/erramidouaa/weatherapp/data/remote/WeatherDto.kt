@@ -2,5 +2,7 @@ package com.erramidouaa.weatherapp.data.remote
 
 import com.google.gson.annotations.SerializedName
 
-// This file is deprecated in favor of models in WeatherApi.kt to avoid redeclarations.
-// Keeping it empty or deleting it.
+/**
+ * Ce fichier est obsolète (deprecated).
+ * Les modèles ont été déplacés vers WeatherApi.kt pour éviter les redondances.
+ */
